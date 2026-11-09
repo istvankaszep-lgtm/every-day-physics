@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Napi Fizika</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 15px; flex-wrap: wrap; gap: 15px; }
+        select { background: #334155; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+        .funfact { margin-top: 25px; background: #0f172a; padding: 15px; border-left: 4px solid #10b981; border-radius: 4px; }
+        .loading { color: #94a3b8; font-style: italic; }
+        section { margin-top: 20px; }
+        
+        /* Opcionális: Szebbé tesszük a Google Fordító dobozát, hogy illeszkedjen a sötét témához */
+        .goog-te-combo { background: #334155; color: #white; border: none; padding: 8px; border-radius: 6px; color: #fff; }
+        .goog-logo-link, .goog-te-gadget span { display: none !important; }
+        div#google_translate_element { color: transparent; }
+    </style>
+
+    <!-- Google Fordító szkript -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'hu',
+                includedLanguages: 'hu,en,ro', // Magyar, Angol, Román
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>⚡ Napi Fizika</h1>
+        
+        <!-- Itt jelenik meg a Google Fordító legördülő menüje -->
+        <div id="google_translate_element"></div>
+    </header>
+
+    <section>
+        <h2 id="title" class="loading">Lecke generálása az AI által...</h2>
+        <p id="text"></p>
+        
+        <div class="funfact">
+            <h3>🧠 Napi Funfact:</h3>
+            <p id="funfact"></p>
+        </div>
+    </section>
+
+    <section>
+        <h2>🧪 Otthoni Biztonságos Kísérlet</h2>
+        <h3 id="project-title" class="loading">Kísérlet betöltése...</h3>
+        <p id="project-desc"></p>
+    </section>
+</div>
+
+<script>
+    async function fetchLesson() {
+        // Alapból lekérjük magyarul az AI-tól, a Google Fordító pedig igény szerint átfordítja az egészet a kiválasztott nyelvre
+        const lang = 'hu';
+        
+        document.getElementById('title').innerText = "AI lecke generálása folyamatban...";
+        document.getElementById('text').innerText = "";
+        document.getElementById('funfact').innerText = "";
+        document.getElementById('project-title').innerText = "";
+        document.getElementById('project-desc').innerText = "";
+
+        try {
+            const response = await fetch(`/api/lesson?lang=${lang}`);
+            const data = await response.json();
+
+            document.getElementById('title').innerText = data.title;
+            document.getElementById('text').innerText = data.text;
+            document.getElementById('funfact').innerText = data.funfact;
+            document.getElementById('project-title').innerText = data.projectTitle;
+            document.getElementById('project-desc').innerText = data.projectDesc;
+        } catch (error) {
+            console.error("Hiba:", error);
+            document.getElementById('title').innerText = "Hiba történt a betöltés során.";
+        }
+    }
+
+    // Oldal betöltésekor lekérjük a tartalmat
+    fetchLesson();
+</script>
+
+</body>
+</html>

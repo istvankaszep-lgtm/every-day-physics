@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔬 Napi Fizika</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <h1 class="logo">⚛️ Napi Fizika</h1>
+            <span class="date" id="currentDate"></span>
+        </div>
+        <div class="header-right">
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span class="lang-icon">🌐</span>
+                    <span class="lang-text" id="currentLang">Magyar</span>
+                    <span class="lang-arrow">▼</span>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option active" data-lang="hu">🇭🇺 Magyar</div>
+                    <div class="lang-option" data-lang="en">🇬🇧 English</div>
+                    <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+                    <div class="lang-option" data-lang="fr">🇫🇷 Français</div>
+                    <div class="lang-option" data-lang="es">🇪🇸 Español</div>
+                    <div class="lang-option" data-lang="it">🇮🇹 Italiano</div>
+                    <div class="lang-option" data-lang="ro">🇷🇴 Română</div>
+                    <div class="lang-option" data-lang="pl">🇵🇱 Polski</div>
+                    <div class="lang-option" data-lang="ja">🇯🇵 日本語</div>
+                    <div class="lang-option" data-lang="zh">🇨🇳 中文</div>
+                    <div class="lang-option" data-lang="ko">🇰🇷 한국어</div>
+                    <div class="lang-option" data-lang="pt">🇧🇷 Português</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader-content">
+            <div class="atom-loader">
+                <div class="nucleus"></div>
+                <div class="electron electron-1"></div>
+                <div class="electron electron-2"></div>
+                <div class="electron electron-3"></div>
+            </div>
+            <p class="loading-text" id="loadingText">Napi lecke betöltése...</p>
+        </div>
+    </div>
+
+    <!-- Translation Loading -->
+    <div class="translate-overlay" id="translateOverlay">
+        <div class="loader-content">
+            <div class="translate-spinner"></div>
+            <p class="loading-text">Fordítás folyamatban...</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Tab Navigation -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="lesson" id="tabLesson">
+                <span class="tab-icon">📖</span>
+                <span class="tab-text" data-i18n="tab_lesson">Napi Lecke</span>
+            </button>
+            <button class="tab-btn" data-tab="project" id="tabProject">
+                <span class="tab-icon">🔧</span>
+                <span class="tab-text" data-i18n="tab_project">Napi Projekt</span>
+            </button>
+        </div>
+
+        <!-- Lesson Tab Content -->
+        <div class="tab-content active" id="lessonContent">
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <span class="lesson-icon" id="lessonIcon">⚡</span>
+                    <div class="lesson-meta">
+                        <span class="lesson-category" id="lessonCategory"></span>
+                        <h2 class="lesson-title" id="lessonTitle"></h2>
+                    </div>
+                    <span class="lesson-number" id="lessonNumber"></span>
+                </div>
+                <div class="lesson-body" id="lessonBody">
+                </div>
+            </div>
+
+            <!-- Fun Fact Section -->
+            <div class="funfact-card">
+                <div class="funfact-header">
+                    <span class="funfact-icon">🤯</span>
+                    <h3 class="funfact-title" data-i18n="funfact_title">Tudtad?</h3>
+                </div>
+                <p class="funfact-text" id="funfactText"></p>
+            </div>
+        </div>
+
+        <!-- Project Tab Content -->
+        <div class="tab-content" id="projectContent">
+            <div class="project-card">
+                <div class="project-header">
+                    <span class="project-icon" id="projectIcon">🧪</span>
+                    <div class="project-meta">
+                        <h2 class="project-title" id="projectTitle"></h2>
+                        <span class="project-difficulty" id="projectDifficulty"></span>
+                    </div>
+                </div>
+                <div class="project-body">
+                    <div class="project-section">
+                        <h3 class="section-title" data-i18n="materials_title">🛒 Szükséges anyagok</h3>
+                        <ul class="materials-list" id="projectMaterials"></ul>
+                    </div>
+                    <div class="project-section">
+                        <h3 class="section-title" data-i18n="steps_title">📋 Lépések</h3>
+                        <ol class="steps-list" id="projectSteps"></ol>
+                    </div>
+                    <div class="project-section">
+                        <h3 class="section-title" data-i18n="explanation_title">🧠 Miért működik?</h3>
+                        <p class="project-explanation" id="projectExplanation"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p data-i18n="footer_text">⚛️ Napi Fizika — Minden nap tanulj valami újat a fizikáról!</p>
+        <p class="footer-sub" data-i18n="footer_powered">Powered by Google Gemini AI</p>
+    </footer>
+
+    <!-- Error Toast -->
+    <div class="toast" id="errorToast">
+        <span class="toast-icon">⚠️</span>
+        <span class="toast-text" id="toastText"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
